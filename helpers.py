@@ -1,3 +1,4 @@
+
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -6,7 +7,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.edge.service import Service
 from selenium.webdriver.edge.options import Options
 from selenium.common.exceptions import ElementClickInterceptedException, ElementNotInteractableException, TimeoutException
-# from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.options import Options
 import pandas as pd
 import numpy as np
 from gtts import gTTS
@@ -14,7 +15,13 @@ from tqdm import tqdm
 import re, time, subprocess, psutil, os
 from multiprocessing import cpu_count
 from pandarallel import pandarallel
+from selenium.webdriver import Chrome
 
+from selenium.webdriver import Chrome
+
+# options = Options()
+# # Add any desired options here
+# driver = Chrome(executable_path="chromedriver-win64\chromedriver.exe", options=options)
 
 pandarallel.initialize(nb_workers=cpu_count()-1)
 
@@ -34,7 +41,7 @@ my_words = set({" ml ","machine learning", "nlp", " cv ", " dl " "deep learning"
  })
 
 
-def kill_all_existing_webdrivers(name = 'firefox'):
+def kill_all_existing_webdrivers(name = "Chrome"):
     '''
     This function kills all processes with the given name
     '''
@@ -56,15 +63,16 @@ class JobScraper:
         "chandigarh":"108789272", "ahmedabad":"104990346"}
 
         options = Options()
+        # options.add_argument('--disable-extensions')
+        # options.add_argument('--disable-gpu')
+        # options.add_argument('--no-sandbox')
+        # options.add_argument('--headless')  # You can remove this line if you want a visible Chrome window.
+        # options.add_argument('--disable-software-rasterizer')
+        
+        kill_all_existing_webdrivers()  # Kill existing Chrome web drivers
 
-        kill_all_existing_webdrivers()
-        # if isinstance(browser, webdriver.edge.service.Service):
-        #     self.browser= webdriver.Edge(service = browser, options=options)
-        # elif isinstance(browser, str):
-        #     self.browser = webdriver.Edge(browser, options=options)
-        # else: self.browser = browser
-        self.browser = webdriver.Firefox()
-    
+        # Initialize the Chrome WebDriver
+        self.browser = Chrome(executable_path = "chromedriver-win64\chromedriver.exe",options=options)
         self.browser.maximize_window()
       
 
